@@ -7,43 +7,44 @@ namespace Задание_12
 {
     class Program
     {
-        static int _countTransfer = 0;
-        static int _countSravnenie = 0;
+        static int countTransfer = 0;
+        static int countSravnenie = 0;
 
-        static void BubbleSort(int[] arr, int size)
+        static void BubbleSort(int[] arr, int size)// сортировка пузырьком
         {
-            _countSravnenie = 0;
-            _countTransfer = 0;
+            countSravnenie = 0;
+            countTransfer = 0;           
 
-            int tmp;
-
-            for (int i = 0; i < size - 1; ++i) // i - номер прохода
+            for (int i = 0; i < size; i++) // i - номер прохода
             {
-                for (int j = 0; j < size - 1; ++j) // внутренний цикл прохода
+                for (int j = 0; j < size - 1 - i; j++) 
                 {
-                    _countSravnenie++;
+                    countSravnenie++;
 
-                    if (arr[j + 1] < arr[j])
+                    if (arr[j] > arr[j+1])
                     {
-                        tmp = arr[j + 1];
-                        arr[j + 1] = arr[j];
-                        arr[j] = tmp;
+                        countTransfer++;
+                        int temp = arr[j];
+                        arr[j] = arr[j+1];
+                        arr[j+1] = temp;
 
-                        _countTransfer += 3;
+                        
                     }
                 }
             }
         }
 
         //k - максим граница значения эл-та в массиве
-        static void CountingSort(int[] a, int[] c, int n, int k)
+        //Подсчитываем сколько раз в массиве встречается каждое значение и 
+        //заполняем массив подсчитанными элементами в соответствующих количествах.
+        static void CountingSort(int[] a, int[] c, int n, int k)//сортировка пересчетами
         {
-            _countSravnenie = 0;
-            _countTransfer = 0;
+            countSravnenie = 0;
+            countTransfer = 0;
 
             int i = 0;
 
-            for (i = 0; i < k; i++)
+            for (i = 0; i < k; i++)//создаем вспомогательный массив, состоящий из нулей
             {
                 c[i] = 0;
             }
@@ -55,7 +56,7 @@ namespace Задание_12
             i = 0;
             for (int j = 0; j < k; j++)
             {
-                _countSravnenie++;
+               //_countSravnenie++;
 
                 while (c[j] != 0)
                 {
@@ -63,8 +64,8 @@ namespace Задание_12
                     c[j]--;
                     i++;
 
-                    _countTransfer++;
-                    _countSravnenie++;
+                    countTransfer++;
+                    //_countSravnenie++;
                 }
             }
         }
@@ -121,19 +122,21 @@ namespace Задание_12
 
         static void PrintRes()
         {
-            Console.WriteLine("Кол-во перестановок = {0}, Кол-во сравнений = {1}", _countTransfer, _countSravnenie);
+            Console.WriteLine("Кол-во перестановок = {0}, Кол-во сравнений = {1}", countTransfer, countSravnenie);
         }
 
         static void Main(string[] args)
         {
-            int n = 10;
-            int max = 50;
+            int n = 1000;
+            int max = 1000;
 
             int[] arr = CreateAscOrderArray(n);
             int[] arr_copy = CopyArray(arr, n);
 
             BubbleSort(arr, n);
+            Console.WriteLine("Упорядоченный по возрастанию:");
             PrintRes();
+
 
             //max - максимальное значение элемента в массиве arr
             int[] c = new int[max];
@@ -145,6 +148,7 @@ namespace Задание_12
             arr_copy = CopyArray(arr, n);
 
             BubbleSort(arr, n);
+            Console.WriteLine("Упорядоченный по убыванию:");
             PrintRes();
 
             CountingSort(arr_copy, c, n, max);
@@ -154,6 +158,7 @@ namespace Задание_12
             arr_copy = CopyArray(arr, n);
 
             BubbleSort(arr, n);
+            Console.WriteLine("Неупорядоченный массив:");
             PrintRes();
 
             CountingSort(arr_copy, c, n, max);
